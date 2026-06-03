@@ -1,26 +1,74 @@
 # Topologically-Constrained Multi-Task Learning for Periodontitis Grading
 
 ## 🦷 Project Overview
-This project addresses the challenge of automated **Periodontal Bone Loss (PBL) grading** using deep learning. Unlike standard classification models, this approach utilizes **Multi-Task Learning (MTL)** to simultaneously perform semantic segmentation of dental structures and classification of periodontitis stages (Stage I-IV and Healthy).
 
-The core objective is to ensure that the AI follows clinical logic by enforcing anatomical consistency between the **Cementoenamel Junction (CEJ)** and the **Alveolar Bone Crest (ABC)**[cite: 1].
+This project investigates automated periodontitis grading from intra-oral dental radiographs using a Multi-Task Learning framework.
+
+The proposed approach jointly performs:
+
+- Radiograph-wise segmentation
+- Periodontitis grade classification
+
+A novel Anatomical Consistency Loss is introduced to encourage consistency between the predicted grade and the clinically relevant CEJ–Bone distance extracted from annotations.
 
 ## 🎯 Main Objectives
-*   **Baseline Implementation:** Developing a dual-branch architecture for simultaneous segmentation and classification[cite: 1].
-*   **Anatomical Constraints:** Integrating a methodological novelty (e.g., Distance-Map Loss) to penalize anatomically inconsistent predictions[cite: 1].
-*   **Interpretability:** Using **Grad-CAM** to verify that the model focuses on relevant clinical landmarks rather than background noise[cite: 1].
+
+- Develop a multi-task deep learning model for segmentation and grading.
+- Generate weak grading labels from CEJ–Bone anatomical distance.
+- Introduce an Anatomical Consistency Loss as a clinically motivated constraint.
+- Compare the proposed method against a baseline model through an ablation study.
 
 ## 📊 Dataset
-The project utilizes the **DenPAR Dataset**, consisting of Intra-Oral Periapical Radiographs with:
-*   **Images:** 1.3k+ training X-rays[cite: 1].
-*   **Annotations:** COCO format instance segmentation masks and clinical grading[cite: 1].
-*   **Metadata:** Arch (Upper/Lower) and FDI notation for specific teeth identification.
+
+The project uses the DenPAR dataset.
+
+Dataset split:
+
+- Training: 650 samples
+- Validation: 150 samples
+- Testing: 200 samples
+
+Available annotations:
+
+- Radiograph-wise segmentation masks
+- Tooth-wise segmentation masks
+- CEJ keypoints
+- Bone-level annotations
 
 ## 🛠 Tech Stack
-*   **Language:** Python
-*   **Framework:** PyTorch (Strictly following course requirements)
-*   **Model Architecture:** Mask R-CNN with a ResNet-50-FPN backbone[cite: 1].
-*   **Environment:** Google Colab with GPU acceleration.
+
+- Python
+- PyTorch
+- Google Colab (T4 GPU)
+- NumPy
+- Pandas
+- Matplotlib
+- 
+## 🧠 Model Architecture
+
+The proposed architecture is a Multi-Task U-Net consisting of:
+
+- Shared convolutional encoder
+- Segmentation decoder
+- Classification head
+
+The classification branch predicts periodontitis grade, while the segmentation branch predicts radiograph-wise masks.
+
+## 📈 Results
+
+### Baseline
+
+- Validation Accuracy: 71.3%
+- Dice Score: 0.912
+- IoU: 0.847
+
+### Proposed Model
+
+- Validation Accuracy: 70.7%
+- Dice Score: 0.892
+- IoU: 0.814
+
+Although the proposed anatomical constraint did not improve overall performance, the study demonstrates the feasibility of integrating clinically motivated constraints into a multi-task learning framework.
 
 ## 📂 Project Structure
 Following the structure required by Prof. Irene Amerini:
@@ -39,5 +87,4 @@ Following the structure required by Prof. Irene Amerini:
 
 ## 👩‍💻 Author
 *   **Name:** Cholponai Manapova
-*   **Student ID:** 2229146
 *   **Course:** Computer Vision (A.Y. 2025-2026), Sapienza University of Rome
